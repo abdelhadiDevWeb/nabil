@@ -88,5 +88,5 @@ COPY nginx.conf /etc/nginx/sites-available/default
 # Switch user
 USER $user
 
-# Start PHP-FPM and Nginx
-CMD service php8.2-fpm start && nginx -g 'daemon off;'
+# Start PHP-FPM and Nginx in foreground
+CMD php-fpm -R && nginx -g 'daemon off;'

@@ -33,7 +33,8 @@ RUN mkdir -p /home/$user/.composer && \
 WORKDIR /var/www
 
 # Copy project files
-COPY ./backend /var/www
+# COPY ./backend /var/www
+COPY . /var/www
 
 # Change ownership of application files
 RUN chown -R $user:$user /var/www

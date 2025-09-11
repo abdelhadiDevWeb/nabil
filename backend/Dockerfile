@@ -43,11 +43,10 @@
 
 FROM php:8.2-fpm
 
-# Arguments
 ARG user=www
 ARG uid=1000
 
-# Install system dependencies + Nginx
+# تثبيت الأدوات و Nginx
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -59,34 +58,25 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     nginx
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
+# تثبيت امتدادات PHP
 RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 
-# Get latest Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create system user
+# إنشاء مستخدم
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+RUN mkdir -p /home/$user/.composer && chown -R $user:$user /home/$user
 
-# Set working directory
+# إعداد مجلد العمل ونسخ المشروع
 WORKDIR /var/www
-
-# Copy project files
 COPY . /var/www
-
-# Change ownership
 RUN chown -R $user:$user /var/www
 
-# Copy Nginx config
+# نسخ ملف إعدادات Nginx
 COPY nginx.conf /etc/nginx/sites-available/default
 
-# Switch user
 USER $user
 
-# Start PHP-FPM and Nginx in foreground
-CMD php-fpm -R && nginx -g 'daemon off;'
+# تشغيل PHP-FPM وNginx معًا
+CMD php-fpm -R & nginx -g 'daemon off;'

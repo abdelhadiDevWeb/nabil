@@ -64,7 +64,7 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# إنشاء مستخدم
+# إنشاء مستخدم المشروع
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && chown -R $user:$user /home/$user
 
@@ -76,7 +76,8 @@ RUN chown -R $user:$user /var/www
 # نسخ ملف إعدادات Nginx
 COPY nginx.conf /etc/nginx/sites-available/default
 
-USER $user
+# العودة إلى root لتجنب مشاكل صلاحيات Nginx
+USER root
 
-# تشغيل PHP-FPM وNginx معًا
+# تشغيل PHP-FPM وNginx في foreground
 CMD php-fpm -R & nginx -g 'daemon off;'

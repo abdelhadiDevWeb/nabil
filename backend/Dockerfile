@@ -1,10 +1,53 @@
+# FROM php:8.2-fpm
+
+# # Arguments defined in docker-compose.yml
+# ARG user=www
+# ARG uid=1000
+
+# # Install system dependencies
+# RUN apt-get update && apt-get install -y \
+#     git \
+#     curl \
+#     libpng-dev \
+#     libonig-dev \
+#     libxml2-dev \
+#     zip \
+#     unzip \
+#     libpq-dev
+
+# # Clear cache
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# # Install PHP extensions
+# RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+
+# # Get latest Composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# # Create system user to run Composer and Artisan Commands
+# RUN useradd -G www-data,root -u $uid -d /home/$user $user
+# RUN mkdir -p /home/$user/.composer && \
+#     chown -R $user:$user /home/$user
+
+# # Set working directory
+# WORKDIR /var/www
+
+# # Copy project files
+# # COPY ./backend /var/www
+# COPY . /var/www
+
+# # Change ownership of application files
+# RUN chown -R $user:$user /var/www
+
+# USER $user
+
 FROM php:8.2-fpm
 
-# Arguments defined in docker-compose.yml
+# Arguments
 ARG user=www
 ARG uid=1000
 
-# Install system dependencies
+# Install system dependencies + Nginx
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -13,7 +56,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libpq-dev
+    libpq-dev \
+    nginx
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -24,7 +68,7 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Create system user to run Composer and Artisan Commands
+# Create system user
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
@@ -33,10 +77,16 @@ RUN mkdir -p /home/$user/.composer && \
 WORKDIR /var/www
 
 # Copy project files
-# COPY ./backend /var/www
 COPY . /var/www
 
-# Change ownership of application files
+# Change ownership
 RUN chown -R $user:$user /var/www
 
+# Copy Nginx config
+COPY nginx.conf /etc/nginx/sites-available/default
+
+# Switch user
 USER $user
+
+# Start PHP-FPM and Nginx
+CMD service php8.2-fpm start && nginx -g 'daemon off;'

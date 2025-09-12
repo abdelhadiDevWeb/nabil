@@ -19,6 +19,7 @@ import {
   XCircle,
   AlertCircle
 } from 'lucide-react';
+import { getApiUrl } from '@/shared/config';
 
 interface UserProfile {
   id: number;
@@ -130,7 +131,7 @@ export default function EmployeeDashboard() {
 
   const checkAuthAndFetchData = async () => {
     try {
-      const response = await fetch('/api/users/me');
+      const response = await fetch(getApiUrl('/api/users/me'));
       const data = await response.json();
       
       if (!data.user) {
@@ -156,7 +157,7 @@ export default function EmployeeDashboard() {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('/api/employee/profile');
+      const response = await fetch(getApiUrl('/api/employee/profile'));
       const data = await response.json();
       setUserProfile(data);
     } catch (error) {
@@ -166,7 +167,7 @@ export default function EmployeeDashboard() {
 
   const fetchPayslips = async () => {
     try {
-      const response = await fetch('/api/employee/payslips');
+      const response = await fetch(getApiUrl('/api/employee/payslips'));
       const data = await response.json();
       setPayslips(data);
     } catch (error) {
@@ -176,7 +177,7 @@ export default function EmployeeDashboard() {
 
   const fetchSalaryChart = async () => {
     try {
-      const response = await fetch('/api/employee/salary-chart');
+      const response = await fetch(getApiUrl('/api/employee/salary-chart'));
       const data = await response.json();
       setSalaryChart(data);
     } catch (error) {
@@ -186,7 +187,7 @@ export default function EmployeeDashboard() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/employee/events');
+      const response = await fetch(getApiUrl('/api/employee/events'));
       const data = await response.json();
       setEvents(data);
     } catch (error) {
@@ -196,7 +197,7 @@ export default function EmployeeDashboard() {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch('/api/employee/announcements');
+      const response = await fetch(getApiUrl('/api/employee/announcements'));
       const data = await response.json();
       setAnnouncements(data);
     } catch (error) {
@@ -206,7 +207,7 @@ export default function EmployeeDashboard() {
 
   const fetchAdminDocuments = async () => {
     try {
-      const response = await fetch('/api/employee/documents');
+      const response = await fetch(getApiUrl('/api/employee/documents'));
       const data = await response.json();
       setAdminDocuments(data);
     } catch (error) {
@@ -216,7 +217,7 @@ export default function EmployeeDashboard() {
 
   const fetchMyRequests = async () => {
     try {
-      const response = await fetch('/api/employee/requests');
+      const response = await fetch(getApiUrl('/api/employee/requests'));
       const data = await response.json();
       setMyRequests(data);
     } catch (error) {
@@ -228,7 +229,7 @@ export default function EmployeeDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/employee/requests', {
+      const response = await fetch(getApiUrl('/api/employee/requests'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -261,7 +262,7 @@ export default function EmployeeDashboard() {
   };
 
   const handleLogout = async () => {
-    await fetch('/api/logout');
+    await fetch(getApiUrl('/api/logout'));
     navigate('/');
   };
 

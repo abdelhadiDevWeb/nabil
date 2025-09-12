@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@getmocha/users-service/react';
 import { useNavigate } from 'react-router';
 import { Building2, Users, Shield, FileText, BarChart3, Clock } from 'lucide-react';
+import { getApiUrl } from '@/shared/config';
 
 export default function Home() {
   const { user, isPending } = useAuth();
@@ -10,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     if (!isPending && user) {
       // Get user role from localStorage or fetch from API
-      fetch('/api/users/me')
+      fetch(getApiUrl('/api/users/me'))
         .then(res => res.json())
         .then(data => {
           if (data.user?.role === 'admin') {

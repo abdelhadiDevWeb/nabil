@@ -17,6 +17,7 @@ import {
   Edit3,
   Trash2
 } from 'lucide-react';
+import { getApiUrl } from '@/shared/config';
 
 interface User {
   id: number;
@@ -171,7 +172,7 @@ export default function AdminDashboard() {
 
   const checkAuthAndRole = async () => {
     try {
-      const response = await fetch('/api/users/me');
+      const response = await fetch(getApiUrl('/api/users/me'));
       const data = await response.json();
       
       if (!data.user || data.user.role !== 'admin') {
@@ -198,7 +199,7 @@ export default function AdminDashboard() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('/api/admin/employees');
+      const response = await fetch(getApiUrl('/api/admin/employees'));
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
@@ -208,7 +209,7 @@ export default function AdminDashboard() {
 
   const fetchConnectionLogs = async () => {
     try {
-      const response = await fetch('/api/admin/logs');
+      const response = await fetch(getApiUrl('/api/admin/logs'));
       const data = await response.json();
       setConnectionLogs(data);
     } catch (error) {
@@ -218,7 +219,7 @@ export default function AdminDashboard() {
 
   const fetchPasswordRequests = async () => {
     try {
-      const response = await fetch('/api/admin/password-requests');
+      const response = await fetch(getApiUrl('/api/admin/password-requests'));
       const data = await response.json();
       setPasswordRequests(data);
     } catch (error) {
@@ -228,7 +229,7 @@ export default function AdminDashboard() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/admin/events');
+      const response = await fetch(getApiUrl('/api/admin/events'));
       const data = await response.json();
       setEvents(data);
     } catch (error) {
@@ -238,7 +239,7 @@ export default function AdminDashboard() {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch('/api/admin/announcements');
+      const response = await fetch(getApiUrl('/api/admin/announcements'));
       const data = await response.json();
       setAnnouncements(data);
     } catch (error) {
@@ -248,7 +249,7 @@ export default function AdminDashboard() {
 
   const fetchAdminDocuments = async () => {
     try {
-      const response = await fetch('/api/admin/documents');
+      const response = await fetch(getApiUrl('/api/admin/documents'));
       const data = await response.json();
       setAdminDocuments(data);
     } catch (error) {
@@ -258,7 +259,7 @@ export default function AdminDashboard() {
 
   const fetchEmployeeRequests = async () => {
     try {
-      const response = await fetch('/api/admin/requests');
+      const response = await fetch(getApiUrl('/api/admin/requests'));
       const data = await response.json();
       setEmployeeRequests(data);
     } catch (error) {
@@ -270,7 +271,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/admin/employees', {
+      const response = await fetch(getApiUrl('/api/admin/employees'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -312,7 +313,7 @@ export default function AdminDashboard() {
     try {
       // In a real implementation, you would upload the file here
       // For demo purposes, we'll simulate the upload
-      const response = await fetch('/api/admin/payslips', {
+      const response = await fetch(getApiUrl('/api/admin/payslips'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -346,7 +347,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/admin/salary-charts', {
+      const response = await fetch(getApiUrl('/api/admin/salary-charts'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -371,7 +372,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/admin/events', {
+      const response = await fetch(getApiUrl('/api/admin/events'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -402,7 +403,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/admin/announcements', {
+      const response = await fetch(getApiUrl('/api/admin/announcements'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -432,7 +433,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/admin/documents', {
+      const response = await fetch(getApiUrl('/api/admin/documents'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -462,7 +463,7 @@ export default function AdminDashboard() {
     e.preventDefault();
     
     try {
-      const response = await fetch(`/api/admin/requests/${requestResponse.id}`, {
+      const response = await fetch(getApiUrl(`/api/admin/requests/${requestResponse.id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -492,7 +493,7 @@ export default function AdminDashboard() {
   };
 
   const handleLogout = async () => {
-    await fetch('/api/logout');
+    await fetch(getApiUrl('/api/logout'));
     navigate('/');
   };
 

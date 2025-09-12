@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useAuth } from '@getmocha/users-service/react';
 import { useNavigate } from 'react-router';
+import { getApiUrl } from '@/shared/config';
 
 export default function AuthCallbackPage() {
   const { exchangeCodeForSessionToken } = useAuth();
@@ -12,7 +13,7 @@ export default function AuthCallbackPage() {
         await exchangeCodeForSessionToken();
         
         // Fetch user role to determine redirect
-        const response = await fetch('/api/users/me');
+        const response = await fetch(getApiUrl('/api/users/me'));
         const data = await response.json();
         
         if (data.user?.role === 'admin') {

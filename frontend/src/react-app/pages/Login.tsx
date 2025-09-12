@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { LogIn, Lock, ArrowLeft } from 'lucide-react';
+import { getApiUrl } from '@/shared/config';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function LoginPage() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(getApiUrl('/api/login'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +51,7 @@ export default function LoginPage() {
     e.preventDefault();
     
     try {
-      const response = await fetch('/api/employee/password-reset-request', {
+      const response = await fetch(getApiUrl('/api/employee/password-reset-request'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
